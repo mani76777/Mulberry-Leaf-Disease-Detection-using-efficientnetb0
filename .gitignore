@@ -1,0 +1,14 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Dataset and model (DO NOT UPLOAD)
+dataset/
+model/
+
+# Environment & OS files
+.env
+.DS_Store
