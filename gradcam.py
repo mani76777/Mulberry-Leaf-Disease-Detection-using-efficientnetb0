@@ -2,38 +2,29 @@ import numpy as np
 
 def get_gradcam_heatmap(img_array, model=None, last_conv_layer_name=None):
     """
-    TensorFlow-free DEMO Grad-CAM heatmap generator.
-    This simulates attention regions for cloud deployment.
+    Strong demo Grad-CAM heatmap (clearly visible).
     """
-    try:
-        # img_array shape: (1, H, W, C)
-        height = img_array.shape[1]
-        width = img_array.shape[2]
+    h, w = img_array.shape[1], img_array.shape[2]
 
-        # Generate a fake but smooth heatmap
-        heatmap = np.random.rand(height, width)
+    # Create artificial "hotspot" region
+    heatmap = np.zeros((h, w), dtype=np.float32)
 
-        # Normalize
-        heatmap = np.maximum(heatmap, 0)
-        if np.max(heatmap) != 0:
-            heatmap = heatmap / np.max(heatmap)
+    # Add strong activation in center
+    cy, cx = h // 2, w // 2
+    heatmap[cy-40:cy+40, cx-40:cx+40] = 1.0
 
-        return heatmap.astype(np.float32)
+    # Smooth edges
+    heatmap = heatmap + 0.3 * np.random.rand(h, w)
+    heatmap = heatmap / np.max(heatmap)
 
-    except Exception as e:
-        print(f"Grad-CAM Demo Error: {e}")
-        return None
+    return heatmap
 
 
 def calculate_severity_percentage(heatmap):
-    """
-    Calculate infection severity based on heatmap intensity.
-    """
     if heatmap is None:
         return 0.0, "Unknown", "⚪"
 
-    # Threshold for infected region
-    diseased_area = np.count_nonzero(heatmap > 0.4)
+    diseased_area = np.count_nonzero(heatmap > 0.5)
     total_area = heatmap.size
     severity_pct = (diseased_area / total_area) * 100
 
