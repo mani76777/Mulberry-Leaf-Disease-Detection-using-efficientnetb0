@@ -92,7 +92,8 @@ if uploaded:
         heatmap_color = cv2.applyColorMap(heatmap_u8, cv2.COLORMAP_JET)
 
         orig_bgr = cv2.cvtColor(np.array(img), cv2.COLOR_RGB2BGR)
-        overlay = cv2.addWeighted(orig_bgr, 0.6, heatmap_color, 0.4, 0)
+        overlay = cv2.addWeighted(orig_bgr, 0.4, heatmap_color, 0.6, 0)
+
 
         st.image(cv2.cvtColor(overlay, cv2.COLOR_BGR2RGB),
                  caption="AI Vision Analysis (Demo)",
